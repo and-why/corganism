@@ -1,0 +1,30 @@
+{
+  "name": "next-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "devserver": "nodemon config/server.js"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.4.10",
+    "apollo-server-express": "^3.3.0",
+    "dotenv": "^10.0.0",
+    "graphql": "^15.5.3",
+    "mongodb": "^3.7.0",
+    "mongoose": "^6.0.5",
+    "next": "11.1.2",
+    "next-auth": "^3.29.0",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "styled-components": "^5.3.1"
+  },
+  "devDependencies": {
+    "eslint": "7.32.0",
+    "eslint-config-next": "11.1.2",
+    "nodemon": "^2.0.12"
+  }
+}
