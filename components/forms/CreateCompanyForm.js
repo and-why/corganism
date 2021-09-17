@@ -6,6 +6,9 @@ import { Form } from '../styled-components/Forms';
 import gql from 'graphql-tag';
 import { useRouter } from 'next/router';
 import { UniqueInputFieldNamesRule } from 'graphql';
+import { useEffect } from 'react';
+import { ErrorMessage } from '../styled-components/ErrorMessage';
+import { GET_ALL_USERS } from 'pages/company';
 
 export const CREATE_COMPANY_MUTATION = gql`
   mutation CREATE_COMPANY_MUTATION($name: String!, $userId: String!, $path: String!) {
@@ -22,45 +25,58 @@ export default function CreateCompanyForm() {
   const [session, _loading] = useSession();
   const userId = session?.user.id;
   const { inputs, handleChange, clearForm, resetForm } = useForm({
+    userId,
     name: '',
+    path: '',
   });
-  const [createCompany, { data, loading, error }] = useMutation(CREATE_COMPANY_MUTATION);
+  const [createCompany, { data, loading, error }] = useMutation(CREATE_COMPANY_MUTATION, {
+    refetchQueries: [GET_ALL_USERS, 'getAllUsers'],
+  });
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await createCompany({
-      variables: {
-        userId: userId,
-        name: inputs.name,
-        path: inputs.name.replace(/\s+/g, '-').toLowerCase(),
-      },
-    });
-    console.log(res.data.createCompany.name);
 
-    // router.push({
-    //   pathname: `/${res.}`
-    // })
+    try {
+      const res = await createCompany({
+        variables: {
+          userId: userId,
+          name: inputs.name,
+          path: inputs.path,
+        },
+      });
+    } catch (error) {
+      return error;
+    }
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <fieldset>
-        <label>
-          <h2>Company name</h2>
-          <p>This name will be permanent and will also act as your URL</p>
-        </label>
-        <input
-          name='name'
-          value={inputs?.name}
-          placeholder='Company name'
-          onChange={handleChange}
-        />
-      </fieldset>
-      <footer>
-        <p>Make sure you're happy before submitting</p>
-        <Button dark type='submit'>
-          Submit
-        </Button>
-      </footer>
-    </Form>
+    <>
+      <Form onSubmit={handleSubmit}>
+        <fieldset>
+          <label>
+            <h2>Add your company information</h2>
+            {error && <ErrorMessage>{error.message}</ErrorMessage>}
+            <p>Please enter the details of your company.</p>
+          </label>
+          <input
+            name='name'
+            value={inputs?.name}
+            placeholder='Company name'
+            onChange={handleChange}
+          />
+          <input
+            name='path'
+            value={inputs?.path}
+            placeholder='Company Website'
+            onChange={handleChange}
+          />
+        </fieldset>
+        <footer>
+          <p>Make sure you're happy before submitting</p>
+          <Button dark type='submit' disabled={loading}>
+            Submit
+          </Button>
+        </footer>
+      </Form>
+    </>
   );
 }

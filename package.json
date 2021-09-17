@@ -7,13 +7,15 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "devserver": "nodemon config/server.js"
+    "server": "nodemon config/server.js"
   },
   "dependencies": {
     "@apollo/client": "^3.4.10",
+    "@types/jsonwebtoken": "^8.5.5",
     "apollo-server-express": "^3.3.0",
     "dotenv": "^10.0.0",
     "graphql": "^15.5.3",
+    "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.7.0",
     "mongoose": "^6.0.5",
     "next": "11.1.2",

@@ -33,7 +33,7 @@ html {
   --brl: 10px;
   --primary: #f4a261;
   --primary-25: rgba(244, 163, 97, 0.25);
-  --ds: 0 4px 8px var(--primary);
+  --bs: 0 4px 10px 5px rgba(0, 0, 0, 0.25);
 }
 html,
 body {
@@ -66,6 +66,10 @@ h6 {
 }
 h1 {
   font-size: 4em;
+  font-weight: 900;
+}
+h2 {
+  font-size: 3em;
   font-weight: 900;
 }
 

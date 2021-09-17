@@ -1,3 +1,4 @@
+import { Container } from '@/components/styled-components/Container';
 import { useSession } from 'next-auth/client';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -8,6 +9,12 @@ import styles from '../styles/Home.module.css';
 
 export default function Home() {
   const [session, loading] = useSession();
-  const companyName = session?.user.company;
-  return <Layout>{!companyName && <Link href='/create-company'>Create Company</Link>}</Layout>;
+
+  return (
+    <Layout page='home'>
+      <Container>
+        <p>Hompage</p>
+      </Container>
+    </Layout>
+  );
 }

@@ -1,35 +1,38 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const JobSchema = new Schema({
+const EmployeeSchema = new Schema({
   name: {
     type: String,
   },
-  description: {
+  email: {
+    type: String,
+  },
+  position: {
+    type: String,
+  },
+  image: {
     type: String,
   },
   company: {
     type: Schema.Types.ObjectId,
     ref: 'Company',
   },
-  userEmail: {
-    type: String,
-  },
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User',
   },
+  manager: {
+    type: Schema.Types.ObjectId,
+    ref: 'Employee',
+  },
   reports: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'Job',
+      ref: 'Employee',
     },
   ],
-  manager: {
-    type: Schema.Types.ObjectId,
-    ref: 'Job',
-  },
 });
 
-const Job = mongoose.model('job', JobSchema);
-module.exports = Job;
+const Employee = mongoose.model('employee', EmployeeSchema);
+module.exports = Employee;

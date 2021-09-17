@@ -6,14 +6,16 @@ export const Form = styled.form`
   flex-direction: column;
   outline: none;
   border-radius: var(--brl);
-  max-width: 600px;
+  max-width: 800px;
   position: relative;
   label {
     font-size: 1em;
     margin-bottom: 25px;
   }
-  input {
+  input,
+  select {
     padding: 1em;
+    margin-bottom: 1em;
     border: 1px solid var(--gray);
     border-radius: var(--brs);
   }
@@ -23,6 +25,7 @@ export const Form = styled.form`
     display: flex;
     flex-direction: column;
   }
+
   footer {
     display: flex;
     justify-content: space-between;

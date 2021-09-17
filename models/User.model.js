@@ -12,6 +12,17 @@ const UserSchema = new Schema({
     type: String,
   },
   emailVerified: {
+    type: String,
+  },
+  job: {
+    type: Schema.Types.ObjectId,
+    ref: 'Job',
+  },
+  company: {
+    type: Schema.Types.ObjectId,
+    ref: 'Company',
+  },
+  confirmed: {
     type: Boolean,
   },
 });

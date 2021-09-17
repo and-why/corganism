@@ -9,12 +9,24 @@ const CompanySchema = new Schema({
     type: String,
   },
   owner: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: 'User',
   },
   jobs: [
     {
       type: Schema.Types.ObjectId,
       ref: 'Job',
+    },
+  ],
+  employees: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Employee',
+    },
+  ],
+  userEmails: [
+    {
+      type: String,
     },
   ],
   users: [

@@ -1,10 +1,10 @@
 import Navigation, { Container } from './Navigation';
 
-export default function Layout({ children }) {
+export default function Layout({ children, page }) {
   return (
     <>
-      <Navigation />
-      <Container>{children}</Container>
+      <Navigation page={page} />
+      {children}
     </>
   );
 }

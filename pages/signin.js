@@ -3,8 +3,9 @@ import { useSession, signIn, signOut } from 'next-auth/client';
 import { useRouter } from 'next/router';
 
 import Layout from '@/components/Layout';
-import { Container } from '@/components/Navigation';
+
 import { Button } from '@/styled-components/Button';
+import { Container } from '@/components/styled-components/Container';
 
 export default function SignInPage() {
   const [session, loading] = useSession();
@@ -22,12 +23,14 @@ export default function SignInPage() {
 
   return (
     <Layout>
-      <Button disabled={loading} onClick={() => signIn('github')}>
-        Sign in with GitHub
-      </Button>
-      <Button disabled={loading} onClick={() => signIn('twitter')}>
-        Sign in with Twitter
-      </Button>
+      <Container>
+        <Button disabled={loading} onClick={() => signIn('github')}>
+          Sign in with GitHub
+        </Button>
+        <Button disabled={loading} onClick={() => signIn('twitter')}>
+          Sign in with Twitter
+        </Button>
+      </Container>
     </Layout>
   );
 }

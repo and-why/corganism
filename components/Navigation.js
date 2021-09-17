@@ -3,20 +3,13 @@ import styled, { css } from 'styled-components';
 import Link from 'next/link';
 import { Button } from './styled-components/Button';
 import Logo from './Logo';
-
-export const Container = styled.div`
-  max-width: 1440px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 1em 5em;
-`;
+import { Container } from './styled-components/Container';
 
 export const Header = styled.header`
   display: grid;
   align-items: center;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: 1fr;
   border-bottom: 1px solid var(--gray);
-  margin-bottom: 50px;
   .logo svg {
     height: 60px;
     width: 60px;
@@ -26,7 +19,10 @@ export const Grid = styled.header`
   width: 100%;
   display: grid;
   align-items: center;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: 1fr;
+  @media (min-width: 800px) {
+    grid-template-columns: 1fr 3fr;
+  } ;
 `;
 
 export const Menu = styled.ul`
@@ -35,6 +31,7 @@ export const Menu = styled.ul`
   flex-direction: row;
   align-items: center;
   margin: 0;
+  padding: 0%;
   li {
     list-style: none;
     margin: 0;
@@ -42,34 +39,36 @@ export const Menu = styled.ul`
   }
 `;
 
-export default function Navigation({}) {
+export default function Navigation({ page }) {
   const [session, loading] = useSession();
   return (
     <Header>
-      <Container>
+      <Container padding='1em 5em'>
         <Grid>
           <div className='logo'>
             <Logo />
           </div>
 
           <Menu>
-            <li>
-              <Link href='/'>
-                <Button secondary>Home</Button>
-              </Link>
-            </li>
-            <li>
-              <Button secondary>Direct Reports</Button>
-            </li>
-            {session?.user.email ? (
+            {session ? (
               <>
+                <li>
+                  <Link href='/dashboard'>
+                    <Button secondary>Dashboard</Button>
+                  </Link>
+                </li>
+                <li>
+                  <Button secondary>Profile</Button>
+                </li>
+                <li>
+                  <Link href='/company'>
+                    <Button>Edit Company</Button>
+                  </Link>
+                </li>
                 <li>
                   <Link href='/account'>
                     <Button>Account</Button>
                   </Link>
-                </li>
-                <li>
-                  <Button onClick={() => signOut()}>Sign out</Button>
                 </li>
               </>
             ) : (
