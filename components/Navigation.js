@@ -46,7 +46,11 @@ export default function Navigation({ page }) {
       <Container padding='1em 5em'>
         <Grid>
           <div className='logo'>
-            <Logo />
+            <Link href={session?.user ? '/dashboard' : '/'}>
+              <a>
+                <Logo />
+              </a>
+            </Link>
           </div>
 
           <Menu>

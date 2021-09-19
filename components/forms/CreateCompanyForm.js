@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import { UniqueInputFieldNamesRule } from 'graphql';
 import { useEffect } from 'react';
 import { ErrorMessage } from '../styled-components/ErrorMessage';
-import { GET_ALL_USERS } from 'pages/company';
+import { GET_ALL_USERS } from '../graphql/queries';
 
 export const CREATE_COMPANY_MUTATION = gql`
   mutation CREATE_COMPANY_MUTATION($name: String!, $userId: String!, $path: String!) {

@@ -83,6 +83,7 @@ const getCompany = async (companyId) => {
       jobs: company.jobs ? getJobs.bind(this, company._doc.jobs) : null,
       owner: company.owner ? getUser.bind(this, company._doc.user) : null,
       users: company.users ? getUsers.bind(this, company._doc.users) : null,
+      employees: company.employees ? getEmployees.bind(this, company._doc.employees) : null,
     };
   } catch (error) {
     throw error;
@@ -146,14 +147,15 @@ const resolvers = {
         throw error;
       }
     },
-    getAllEmployees: async (companyId) => {
+    getAllEmployees: async (_parent, { id }, _context, _info) => {
       try {
-        const employeeIds = await Company.findById(companyId);
+        const company = await Company.findById(id);
         const employees = await Employee.find({
-          employees: {
-            $in: employeeIds,
+          company: {
+            $in: [id, company],
           },
         });
+        console.log('initial employees', employees);
         return employees.map((employee) => ({
           ...employee._doc,
           id: employee._doc._id,

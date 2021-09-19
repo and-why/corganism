@@ -9,7 +9,7 @@ export default function ProfileIcon() {
     >
       <path
         d='M0 200.001C0 62 62 0 200 0C349.999 0 400 62 400 200.001C400 350 349.999 400 200 400C62 400 0 350 0 200.001Z'
-        fill='#F461CB'
+        fill='var(--black)'
       />
       <path
         fill-rule='evenodd'

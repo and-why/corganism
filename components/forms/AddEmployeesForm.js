@@ -66,10 +66,14 @@ export default function AddEmployeesForm({ user }) {
       <Form onSubmit={handleSubmit}>
         <fieldset>
           <label>
-            <h2>Add an employee</h2>
+            <h2>Add {employees.length > 0 ? 'an' : 'your first'} employee</h2>
             {error && <ErrorMessage>{error.message}</ErrorMessage>}
             {addError && <ErrorMessage>{addError.message}</ErrorMessage>}
-            <p>Please enter the details of your employee.</p>
+            <p>
+              {employees.length > 0
+                ? 'Please enter the details of your next employee. Adding the manager before their direct report is the simplest way to do this.'
+                : 'The simplest way to add employees, is to add your highest employee, then their direct reports. From there you can add the direct reports of those direct reports. Always add a manager before their direct report.'}
+            </p>
           </label>
           <input name='name' value={inputs?.name} placeholder='Full Name' onChange={handleChange} />
           <input

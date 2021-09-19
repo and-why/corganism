@@ -61,7 +61,11 @@ export const GET_EMPLOYEE_BY_ID = gql`
         name
       }
       company {
+        id
         name
+        users {
+          id
+        }
       }
     }
   }

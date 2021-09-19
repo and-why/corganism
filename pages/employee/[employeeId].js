@@ -10,6 +10,8 @@ import { ErrorMessage } from '@/components/styled-components/ErrorMessage';
 import { Flex } from '@/components/styled-components/Flex';
 import { LeftColumn, RightColumn, TwoColumns } from '@/components/styled-components/PageLayouts';
 import Breadcrumbs from '@/components/Breadcrumbs';
+import { getSession, useSession } from 'next-auth/client';
+import { Container } from '@/components/styled-components/Container';
 
 export const ProfilePageStyles = styled.div`
   display: flex;
@@ -83,6 +85,14 @@ export const ProfileInfoLine = styled.tr`
 `;
 
 export default function EmployeePage() {
+  const [session, loading] = useSession();
+  if (!session) {
+    return (
+      <Layout>
+        <Container>Must be logged in to see this page</Container>
+      </Layout>
+    );
+  }
   const { query } = useRouter();
   const { employeeId } = query;
   function clickToCopy(e) {
@@ -90,30 +100,47 @@ export default function EmployeePage() {
     e.target.setAttribute('data-text', 'Copied!');
   }
 
-  const { data, loading, error } = useQuery(GET_EMPLOYEE_BY_ID, {
+  const {
+    data,
+    loading: loadingEmployees,
+    error,
+  } = useQuery(GET_EMPLOYEE_BY_ID, {
     variables: { id: employeeId },
   });
-  if (loading) return <p>loading...</p>;
 
-  const user = data?.getEmployeeById;
+  const employee = data?.getEmployeeById;
 
+  if (loading || loadingEmployees) {
+    return (
+      <Layout>
+        <Container>Loading</Container>
+      </Layout>
+    );
+  }
+  if (!employee?.company.users.some((user) => user.id === session.user.id)) {
+    return (
+      <Layout>
+        <Container>This employee is not part of your organisation</Container>
+      </Layout>
+    );
+  }
   return (
     <Layout>
       {error && <ErrorMessage error={error.message} />}
       <TwoColumns>
         <LeftColumn>
-          <Breadcrumbs employeeId={user.id} />
-          {user.manager && (
+          <Breadcrumbs employeeId={employee.id} />
+          {employee.manager && (
             <>
               <h3>Manager:</h3>
-              <ProfileTab employeeId={user.manager.id} type='manager' />
+              <ProfileTab employeeId={employee.manager.id} type='manager' />
             </>
           )}
-          <ProfileTab employeeId={user.id} />
-          {user.reports.length > 0 && (
+          <ProfileTab employeeId={employee.id} />
+          {employee.reports.length > 0 && (
             <>
               <h3>Direct reports:</h3>
-              {user.reports.map((report) => (
+              {employee.reports.map((report) => (
                 <ProfileTab employeeId={report.id} type='report' />
               ))}
             </>
@@ -122,51 +149,51 @@ export default function EmployeePage() {
         <RightColumn background='var(--dark)'>
           <ProfilePageStyles>
             <Flex justify='flex-start' mb='50px'>
-              {user?.image ? <Image src={user.image} /> : <ProfileIcon />}
-              <h2>{user.name}</h2>
+              {employee?.image ? <Image src={user.image} /> : <ProfileIcon />}
+              <h2>{employee.name}</h2>
             </Flex>
             <ProfileInfoTable>
-              {user.manager && (
+              {employee.manager && (
                 <ProfileInfoLine>
                   <td>Manger:</td>{' '}
                   <td>
-                    <Link href={user.manager.id}>
-                      <a>{user.manager.name}</a>
+                    <Link href={employee.manager.id}>
+                      <a>{employee.manager.name}</a>
                     </Link>
                   </td>
                 </ProfileInfoLine>
               )}
               <ProfileInfoLine>
-                <td>Position:</td> <td>{user.position || 'Unknown'}</td>{' '}
+                <td>Position:</td> <td>{employee.position || 'Unknown'}</td>{' '}
               </ProfileInfoLine>
               <ProfileInfoLine>
-                <td>Department:</td> <td>{user.department || 'Unknown'}</td>{' '}
+                <td>Department:</td> <td>{employee.department || 'Unknown'}</td>{' '}
               </ProfileInfoLine>
               <ProfileInfoLine>
                 <td>Email:</td>{' '}
                 <td>
                   {(
                     <a className='clickcopy' onClick={clickToCopy} data-text='Click to copy'>
-                      {user.email}
+                      {employee.email}
                     </a>
                   ) || 'Unknown'}
                 </td>
               </ProfileInfoLine>
               <ProfileInfoLine>
-                <td>Phone Number:</td> <td>{user.number || 'Unknown'}</td>{' '}
+                <td>Phone Number:</td> <td>{employee.number || 'Unknown'}</td>{' '}
               </ProfileInfoLine>
             </ProfileInfoTable>
-            {(user.twitter || user.linkedin) && (
+            {(employee.twitter || employee.linkedin) && (
               <>
                 <h3>Socials</h3>
                 <ProfileInfoTable>
                   <ProfileInfoLine>
                     <td>Twitter:</td>
-                    <td>{user.twitter || 'Unknown'}</td>
+                    <td>{employee.twitter || 'Unknown'}</td>
                   </ProfileInfoLine>
                   <ProfileInfoLine>
                     <td>LinkedIn:</td>
-                    <td>{user.linkedin || 'Unknown'}</td>
+                    <td>{employee.linkedin || 'Unknown'}</td>
                   </ProfileInfoLine>
                 </ProfileInfoTable>
               </>

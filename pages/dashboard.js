@@ -14,24 +14,38 @@ import { Flex } from '@/components/styled-components/Flex';
 import { Container } from '@/components/styled-components/Container';
 
 export default function Home({ users, session }) {
-  console.log(session);
-
   const [user] = users.filter((user) => user.id == session?.user.id);
 
-  const companyId = user?.company.id;
+  const companyId = user?.company ? user.company.id : null;
+
   const { data, loading, error } = useQuery(GET_ALL_EMPLOYEES, {
     variables: { id: companyId },
   });
+
+  if (loading) {
+    return (
+      <Layout>
+        <Container>Loading...</Container>
+      </Layout>
+    );
+  }
+
   const employees = data?.getAllEmployees;
   console.log('employees', employees);
+  if (employees.length === 0) {
+    return (
+      <Layout>
+        <Container>No Company or Employees found</Container>
+      </Layout>
+    );
+  }
 
   // if (typeof window !== 'undefined') return null;
   const noManagers = employees?.filter((employee) => employee.manager === null);
-
+  console.log(error);
   return (
     <Layout>
       <Container>
-        {loading && <p>loading</p>}
         {error && <ErrorMessage error={error.message} />}
         <h2>Leadership</h2>
         <Flex align='flex-start' justify='flex-start'>
@@ -62,6 +76,7 @@ export default function Home({ users, session }) {
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
+
   const { data } = await client.query({
     query: gql`
       query GET_ALL_USERS {
