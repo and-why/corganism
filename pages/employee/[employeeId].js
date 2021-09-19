@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useQuery } from '@apollo/client';
 import styled from 'styled-components';
@@ -65,7 +66,7 @@ export const ProfileInfoLine = styled.tr`
       content: attr(data-text);
       position: absolute;
       top: 35px;
-      right: 90%;
+      right: '90%';
       transform: translateX(50%);
       background: var(--black);
       color: white;
@@ -86,13 +87,6 @@ export const ProfileInfoLine = styled.tr`
 
 export default function EmployeePage() {
   const [session, loading] = useSession();
-  if (!session) {
-    return (
-      <Layout>
-        <Container>Must be logged in to see this page</Container>
-      </Layout>
-    );
-  }
   const { query } = useRouter();
   const { employeeId } = query;
   function clickToCopy(e) {
@@ -110,6 +104,13 @@ export default function EmployeePage() {
 
   const employee = data?.getEmployeeById;
 
+  if (!session) {
+    return (
+      <Layout>
+        <Container>Must be logged in to see this page</Container>
+      </Layout>
+    );
+  }
   if (loading || loadingEmployees) {
     return (
       <Layout>
@@ -141,7 +142,7 @@ export default function EmployeePage() {
             <>
               <h3>Direct reports:</h3>
               {employee.reports.map((report) => (
-                <ProfileTab employeeId={report.id} type='report' />
+                <ProfileTab key={report.id} employeeId={report.id} type='report' />
               ))}
             </>
           )}

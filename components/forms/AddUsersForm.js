@@ -34,9 +34,9 @@ export default function AddUsersForm({ user }) {
   console.log('form user', user);
   const companyId = user.company.id;
   const { inputs, handleChange, clearForm, resetForm } = useForm({
-    name: 'Ranie Daw',
-    email: 'work@andysmith.is',
-    position: 'Head of head',
+    name: '',
+    email: '',
+    position: '',
   });
   const [addUser, { data, loading, error }] = useMutation(CREATE_NEW_USER, {
     refetchQueries: [GET_ALL_USERS, 'getAllUsers'],
@@ -87,7 +87,7 @@ export default function AddUsersForm({ user }) {
           <select name='manager' id='manager'></select>
         </fieldset>
         <footer>
-          <p>Make sure you're happy before submitting</p>
+          <p>Make sure you&apos;re happy before submitting</p>
           <Button dark type='submit' disabled={loading}>
             Submit
           </Button>

@@ -16,7 +16,7 @@ export default function AccountPage() {
         pathname: '/',
       });
     }
-  }, [session]);
+  }, [session, router]);
 
   return (
     <Layout>

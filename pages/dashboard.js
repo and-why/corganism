@@ -52,6 +52,7 @@ export default function Home({ users, session }) {
           {noManagers &&
             noManagers.map((noManager) => (
               <Flex
+                key={noManager.id}
                 align='center'
                 justify='flex-start'
                 margin='25px'
@@ -63,7 +64,7 @@ export default function Home({ users, session }) {
                 <Flex justify='flex-start'>
                   {noManager.reports &&
                     noManager.reports.map((report) => (
-                      <ProfileTab employeeId={report.id} type='report' />
+                      <ProfileTab key={report.id} employeeId={report.id} type='report' />
                     ))}
                 </Flex>
               </Flex>

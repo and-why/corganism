@@ -71,7 +71,7 @@ export default function CreateCompanyForm() {
           />
         </fieldset>
         <footer>
-          <p>Make sure you're happy before submitting</p>
+          <p>Make sure you&#39;re happy before submitting</p>
           <Button dark type='submit' disabled={loading}>
             Submit
           </Button>

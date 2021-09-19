@@ -20,15 +20,14 @@ export default function AddEmployeesForm({ user }) {
     useMutation(ADD_EMPLOYEE, {
       refetchQueries: [GET_ALL_EMPLOYEES],
     });
-  console.log('form user', user);
 
   const employees = data?.getAllEmployees;
   console.log(employees);
 
   const { inputs, handleChange, clearForm, resetForm } = useForm({
-    name: 'Andy Smith',
-    email: 'andy@andysmith.is',
-    position: 'CEO',
+    name: '',
+    email: '',
+    position: '',
     managerId: undefined,
   });
 
@@ -36,7 +35,6 @@ export default function AddEmployeesForm({ user }) {
     e.preventDefault();
     setLoading(true);
     try {
-      console.log('inputs', inputs);
       const res = await addEmployee({
         variables: {
           name: inputs.name,
@@ -66,13 +64,13 @@ export default function AddEmployeesForm({ user }) {
       <Form onSubmit={handleSubmit}>
         <fieldset>
           <label>
-            <h2>Add {employees.length > 0 ? 'an' : 'your first'} employee</h2>
+            <h2>Add {employees.length > 0 ? `an` : `your first`} employee</h2>
             {error && <ErrorMessage>{error.message}</ErrorMessage>}
             {addError && <ErrorMessage>{addError.message}</ErrorMessage>}
             <p>
               {employees.length > 0
-                ? 'Please enter the details of your next employee. Adding the manager before their direct report is the simplest way to do this.'
-                : 'The simplest way to add employees, is to add your highest employee, then their direct reports. From there you can add the direct reports of those direct reports. Always add a manager before their direct report.'}
+                ? `Please enter the details of your next employee. Adding the manager before their direct report is the simplest way to do this.`
+                : `The simplest way to add employees, is to add your highest employee, then their direct reports. From there you can add the direct reports of those direct reports. Always add a manager before their direct report.`}
             </p>
           </label>
           <input name='name' value={inputs?.name} placeholder='Full Name' onChange={handleChange} />
@@ -101,7 +99,7 @@ export default function AddEmployeesForm({ user }) {
           </select>
         </fieldset>
         <footer>
-          <p>Make sure you're happy before submitting</p>
+          <p>Make sure you&apos;re happy before submitting</p>
           <Button dark type='submit' disabled={isLoading}>
             Submit
           </Button>
