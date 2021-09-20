@@ -94,7 +94,7 @@ export default function NewUserPage({ session, companies }) {
         <Form onSubmit={handleSubmit}>
           <fieldset>
             <label>
-              <h2>Welcome to {company.name}'s Eadee Account</h2>
+              <h2>Welcome to {company.name}&#39;s Eadee Account</h2>
               <p>
                 Please fill in the below to complete your signup. These fields are all optional but
                 will ensure the Employee Database is more complete and usable.
