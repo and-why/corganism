@@ -45,7 +45,7 @@ export const ProfileInfoLine = styled.tr`
     text-decoration: none;
     cursor: pointer;
     &[aria-current='true'] {
-      background: var(--primary);
+      background: var(--black);
       color: var(--black);
     }
     &:hover {
@@ -66,7 +66,7 @@ export const ProfileInfoLine = styled.tr`
       content: attr(data-text);
       position: absolute;
       top: 35px;
-      right: '90%';
+      right: 90%;
       transform: translateX(50%);
       background: var(--black);
       color: white;

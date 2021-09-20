@@ -15,7 +15,7 @@ import { Container } from '@/components/styled-components/Container';
 
 export default function Home({ users, session }) {
   const [user] = users.filter((user) => user.id == session?.user.id);
-
+  console.log('session', session);
   const companyId = user?.company ? user.company.id : null;
 
   const { data, loading, error } = useQuery(GET_ALL_EMPLOYEES, {

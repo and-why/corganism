@@ -28,6 +28,7 @@ const typeDefs = gql`
     image: String
     emailVerified: Boolean
     company: Company
+    employee: Employee
     job: Job
     confirmed: Boolean
   }
@@ -41,9 +42,13 @@ const typeDefs = gql`
     reports: [Employee]
     company: Company
     user: User
+    linkedin: String
+    twitter: String
+    phone: String
   }
   type Query {
     getAllCompanies: [Company]
+    getCompanyById(id: ID): Company
     getAllJobs: [Job]
     getAllUsers: [User]
     getAllEmployees(id: ID): [Employee]
@@ -73,6 +78,8 @@ const typeDefs = gql`
       managerId: String
       image: String
     ): Employee
+    linkUser(employeeId: String, userId: String, companyId: String): User
+    updateEmployee(id: ID, phone: String, twitter: String, linkedin: String): Employee
     updateUser(id: ID, name: String, email: String, companyId: String, jobId: String): User
   }
 `;

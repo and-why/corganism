@@ -1,3 +1,5 @@
+import { Flex } from './styled-components/Flex';
+
 export default function Logo() {
   return (
     <svg fill='none' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'>

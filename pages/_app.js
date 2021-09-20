@@ -1,7 +1,7 @@
 import '../styles/globals.css';
 import { Provider } from 'next-auth/client';
 import { ThemeProvider } from 'styled-components';
-import { ApolloProvider } from '@apollo/client';
+import { ApolloProvider, useQuery } from '@apollo/client';
 import client from 'config/apollo-client';
 
 const theme = {

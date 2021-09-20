@@ -14,6 +14,10 @@ const UserSchema = new Schema({
   emailVerified: {
     type: String,
   },
+  employee: {
+    type: Schema.Types.ObjectId,
+    ref: 'Employee',
+  },
   job: {
     type: Schema.Types.ObjectId,
     ref: 'Job',

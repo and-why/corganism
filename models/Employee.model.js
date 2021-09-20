@@ -32,6 +32,15 @@ const EmployeeSchema = new Schema({
       ref: 'Employee',
     },
   ],
+  phone: {
+    type: String,
+  },
+  twitter: {
+    type: String,
+  },
+  linkedin: {
+    type: String,
+  },
 });
 
 const Employee = mongoose.model('employee', EmployeeSchema);

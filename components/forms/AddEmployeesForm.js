@@ -35,21 +35,39 @@ export default function AddEmployeesForm({ user }) {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await addEmployee({
-        variables: {
-          name: inputs.name,
-          email: inputs.email,
-          position: inputs.position,
-          companyId: companyId,
-          managerId: inputs.managerId,
+      const data = {
+        name: inputs.name,
+        email: inputs.email,
+        companyId: companyId,
+      };
+      const res = await fetch('/api/email/send-mail', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json, text/plain, */*',
+          'Content-Type': 'application/json',
         },
+        body: JSON.stringify(data),
       });
+      console.log(res);
+      if (res.status === 200) {
+        console.log('Response succeeded!');
 
-      console.log('res', res);
-      if (res) {
+        await addEmployee({
+          variables: {
+            name: inputs.name,
+            email: inputs.email,
+            position: inputs.position,
+            companyId: companyId,
+            managerId: inputs.managerId,
+          },
+        });
+
         setShowToaster(true);
         clearForm();
+      } else {
+        return res.error;
       }
+
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -64,11 +82,11 @@ export default function AddEmployeesForm({ user }) {
       <Form onSubmit={handleSubmit}>
         <fieldset>
           <label>
-            <h2>Add {employees.length > 0 ? `an` : `your first`} employee</h2>
+            <h2>Add {employees?.length > 0 ? `an` : `your first`} employee</h2>
             {error && <ErrorMessage>{error.message}</ErrorMessage>}
             {addError && <ErrorMessage>{addError.message}</ErrorMessage>}
             <p>
-              {employees.length > 0
+              {employees?.length > 0
                 ? `Please enter the details of your next employee. Adding the manager before their direct report is the simplest way to do this.`
                 : `The simplest way to add employees, is to add your highest employee, then their direct reports. From there you can add the direct reports of those direct reports. Always add a manager before their direct report.`}
             </p>
@@ -107,7 +125,7 @@ export default function AddEmployeesForm({ user }) {
       </Form>
       <Toaster
         heading='Success'
-        content={`Employee was added successfully`}
+        content={`Employee was added successfully. They will recieve an email invite to join.`}
         display={showToaster}
         setShowToaster={setShowToaster}
       />

@@ -25,7 +25,6 @@ export const Form = styled.form`
     display: flex;
     flex-direction: column;
   }
-
   footer {
     display: flex;
     justify-content: space-between;

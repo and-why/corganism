@@ -28,8 +28,8 @@ export default function CreateCompanyPage() {
   return (
     <Layout>
       <Container>
-        <h1>{user.company.name ? user.company.name : 'My company'}</h1>
-        {!user.company ? <CreateCompanyForm /> : <AddEmployeesForm user={user} />}
+        <h1>{user?.company.name ? user.company.name : 'My company'}</h1>
+        {!user?.company ? <CreateCompanyForm /> : <AddEmployeesForm user={user} />}
       </Container>
     </Layout>
   );

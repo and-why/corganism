@@ -142,7 +142,21 @@ const resolvers = {
           id: company._doc._id,
           jobs: getJobs.bind(this, company._doc.jobs),
           users: getUsers.bind(this, company._doc.users),
+          employees: getEmployees.bind(this, company._doc.employees),
         }));
+      } catch (error) {
+        throw error;
+      }
+    },
+    getCompanyById: async (_parent, { id }, _context, _info) => {
+      try {
+        const company = await Company.findById(id);
+        return {
+          ...company._doc,
+          id: company._id,
+          employees: getEmployees.bind(this, company._doc.employees),
+          users: getUsers.bind(this, company._doc.users),
+        };
       } catch (error) {
         throw error;
       }
@@ -155,7 +169,6 @@ const resolvers = {
             $in: [id, company],
           },
         });
-        console.log('initial employees', employees);
         return employees.map((employee) => ({
           ...employee._doc,
           id: employee._doc._id,
@@ -197,13 +210,13 @@ const resolvers = {
         throw error;
       }
     },
-
     getUser: async (_parent, { id }, _context, _info) => {
       const user = await User.findById(id);
       return {
         ...user._doc,
         id: user._id,
-        company: getCompany.bind(this, user._doc.company),
+        company: user.company ? getCompany.bind(this, user._doc.company) : null,
+        employee: user.employee ? getEmployee.bind(this, user._doc.employee) : null,
       };
     },
     getEmployeeById: async (_parent, { id }, _context, _info) => {
@@ -214,6 +227,7 @@ const resolvers = {
         company: getCompany.bind(this, employee._doc.company),
         manager: employee.manager ? getEmployee.bind(this, employee._doc.manager) : null,
         reports: employee.reports ? getEmployees.bind(this, employee._doc.reports) : [],
+        user: employee.user ? getUser.bind(this, employee._doc.user) : null,
       };
     },
     getJob: async (_parent, { id }, _context, _info) => {
@@ -355,6 +369,50 @@ const resolvers = {
           ...savedJob._doc,
           id: savedJob._id,
           company: getCompany.bind(this, savedCompany),
+        };
+      } catch (error) {
+        throw error;
+      }
+    },
+    linkUser: async (parent, { userId, employeeId, companyId }, context, info) => {
+      const user = await User.findById(userId);
+      const employee = await Employee.findById(employeeId);
+      const company = await Company.findById(companyId);
+      user.employee = employee;
+      user.company = company;
+      employee.user = user;
+      company.users.push(user);
+      company.userEmails.push(user.email);
+      user.name = employee.name;
+
+      await company.save();
+      await employee.save();
+      const savedUser = await user.save();
+      return {
+        ...savedUser,
+        id: savedUser._id,
+      };
+    },
+    updateEmployee: async (parent, { id, phone, twitter, linkedin }, context, info) => {
+      const updates = {};
+      if (phone !== undefined) {
+        updates.phone = phone;
+      }
+      if (twitter !== undefined) {
+        updates.twitter = twitter;
+      }
+      if (linkedin !== undefined) {
+        updates.linkedin = linkedin;
+      }
+      try {
+        const employee = await Employee.findById(id);
+        employee.phone = phone;
+        employee.twitter = twitter;
+        employee.linkedin = linkedin;
+        const savedEmployee = await employee.save();
+        return {
+          ...savedEmployee,
+          id: savedEmployee._id,
         };
       } catch (error) {
         throw error;

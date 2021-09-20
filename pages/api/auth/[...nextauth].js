@@ -25,6 +25,10 @@ export default NextAuth({
       from: process.env.EMAIL_FROM,
     }),
   ],
+  pages: {
+    verifyRequest: '/auth/verify',
+    newUser: '/auth/new-user',
+  },
   database: process.env.MONGO_DB_URI,
   // jwt: {
   //   secret: process.env.JWT_SECRET,
@@ -36,14 +40,10 @@ export default NextAuth({
      *                               JSON Web Token (if not using database sessions)
      * @return {object}              Session that will be returned to the client
      */
-    // async jwt({ token, account }) {
-    //   if (account) {
-    //     token.accessToken = account.access_token;
-    //   }
-    // },
 
     session: async (session, user, _sessionToken) => {
       session.user.id = user.id;
+
       return Promise.resolve(session);
     },
   },
