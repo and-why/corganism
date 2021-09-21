@@ -43,12 +43,12 @@ export default function SignUpCompany({ email, companyId }) {
           {/* <input name='csrfToken' type='hidden' defaultValue={csrfToken} /> */}
           {error && <ErrorMessage>{error.message}</ErrorMessage>}
           <fieldset>
-            <h2>Sign up</h2>
+            <h2>Complete sign up</h2>
             <label>
               <p>
                 You have been invited to join <strong>{company ? `${company?.name}'s` : ''}</strong>{' '}
                 Eadee account. Complete the process by signing up below. Your email has
-                automatically been applied.
+                automatically been applied. Double check it is correct. If
               </p>
             </label>
             <input disabled type='email' id='email' name='email' value={email} />

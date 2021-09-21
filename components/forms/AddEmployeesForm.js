@@ -25,9 +25,9 @@ export default function AddEmployeesForm({ user }) {
   console.log(employees);
 
   const { inputs, handleChange, clearForm, resetForm } = useForm({
-    name: '',
-    email: '',
-    position: '',
+    name: 'Testing',
+    email: 'work+testing1@andysmith.is',
+    position: 'tester',
     managerId: undefined,
   });
 

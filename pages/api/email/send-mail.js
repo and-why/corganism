@@ -60,10 +60,10 @@ export default (req, res) => {
     return `You have been invited to join Eadee - Your Employee Directory. \nPlease complete the sign up process here:\n${url}\n\n`;
   }
 
+  const formattedEmail = encodeURIComponent(req.body.email);
+
   const emailData = {
-    url: encodeURIComponent(
-      `${process.env.NEXTAUTH_URL}/signup/company/${req.body.companyId}?email=${req.body.email}`,
-    ),
+    url: `${process.env.NEXTAUTH_URL}/signup/company/${req.body.companyId}?email=${formattedEmail}`,
     email: req.body.email,
   };
 

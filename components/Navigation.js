@@ -92,7 +92,7 @@ export default function Navigation({ page }) {
             </Link>
           </div>
           <Menu>
-            {data?.getUser.employee ? (
+            {session ? (
               <>
                 <li>
                   <Link href='/dashboard'>
@@ -111,7 +111,6 @@ export default function Navigation({ page }) {
                     <Button>Edit Company</Button>
                   </Link>
                 </li>
-
                 <li>
                   <Link href='/account'>
                     <Button>Account</Button>
