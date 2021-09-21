@@ -3,17 +3,20 @@ import { useQuery } from '@apollo/client';
 import gql from 'graphql-tag';
 import client from 'config/apollo-client';
 import { getSession, useSession } from 'next-auth/client';
-import Head from 'next/head';
-import Image from 'next/image';
-import Link from 'next/link';
 import Layout from '../components/Layout';
-import styles from '../styles/Home.module.css';
 import { ErrorMessage } from '@/components/styled-components/ErrorMessage';
 import ProfileTab from '@/components/ProfileTab';
 import { Flex } from '@/components/styled-components/Flex';
 import { Container } from '@/components/styled-components/Container';
 
 export default function Home({ users, session }) {
+  if (users === null) {
+    return (
+      <Layout>
+        <Container>No Users</Container>
+      </Layout>
+    );
+  }
   const [user] = users.filter((user) => user.id == session?.user.id);
   console.log('session', session);
   const companyId = user?.company ? user.company.id : null;
@@ -23,16 +26,12 @@ export default function Home({ users, session }) {
   });
 
   if (loading) {
-    return (
-      <Layout>
-        <Container>Loading...</Container>
-      </Layout>
-    );
+    return null;
   }
 
   const employees = data?.getAllEmployees;
   console.log('employees', employees);
-  if (employees.length === 0) {
+  if (employees.length === 0 || !data) {
     return (
       <Layout>
         <Container>No Company or Employees found</Container>
@@ -42,7 +41,6 @@ export default function Home({ users, session }) {
 
   // if (typeof window !== 'undefined') return null;
   const noManagers = employees?.filter((employee) => employee.manager === null);
-  console.log(error);
   return (
     <Layout>
       <Container>
@@ -93,6 +91,14 @@ export async function getServerSideProps(context) {
       }
     `,
   });
+  if (!data) {
+    return {
+      props: {
+        users: null,
+        session,
+      },
+    };
+  }
   return {
     props: {
       users: data.getAllUsers,

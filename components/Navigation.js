@@ -65,18 +65,9 @@ export default function Navigation({ page }) {
     },
   });
 
-  // console.log(data, session);
-
   if (loading || loadingUsers) {
     return <p>loading</p>;
   }
-
-  // if (!data?.getUser.employee && router.pathname !== '/auth/new-user') {
-  //   router.push({
-  //     pathname: '/auth/new-user',
-  //   });
-  // }
-
   return (
     <Header>
       <Container padding='1em 5em'>
