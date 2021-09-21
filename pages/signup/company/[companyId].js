@@ -31,7 +31,7 @@ export default function SignUpCompany({ email, companyId }) {
     }
   };
 
-  if (loading) return;
+  if (loading) return null;
 
   const company = data?.getCompanyById;
   console.log(company);

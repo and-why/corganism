@@ -31,11 +31,7 @@ async function startServer() {
   console.log('mongoose connected');
 
   // set the port for the listening. Choose anything other than 3000, as that's the where the Next.js app will run from.
-  app.listen(4000, () =>
-    console.log(
-      'Server is running on post 4000: http://localhost:4000 - go to graphql server here: http://localhost:4000/graphql ',
-    ),
-  );
+  app.listen({ port: process.env.PORT || 4000 }, () => console.log(`Server is running`));
 }
 
 startServer();
